@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+        <title>21</title>
+</head>
+<body>
+    <header>
+        <img  class="logo" src="https://www.dafont.com/forum/attach/orig/1/2/127066.png" alt="icono que dice BlackJack">
+    </header>
+    <main>
+        <div class="text-center mt-2">
+            <button class="btn btn-success">Iniciar Juego</button>
+            <button class="btn btn-primary ml-2">Pedir Carta</button>
+            <button class="btn btn-warning ml-2">Detener</button>
+            <button class="btn btn-danger ml-2">Salir</button>
+        </div>
+
+        <div class="row container">
+            <div class="col">
+                <p id="nombreJugador">Jugador-0 <button class="btn bnt-sm btn-info" onclick="prueba()">Cambiar nombre</button></p> 
+                <img class="carta" src="cartas/10C.png" alt="">
+                <img class="carta" src="cartas/KD.png" alt="">
+            </div>
+        </div>
+        <div class="row container">
+            <div class="col">
+                <p>PC-0</p>
+                <img class="carta" src="cartas/10C.png" alt="">
+                <img class="carta" src="cartas/KD.png" alt="">
+            </div>
+        </div>
+    </main>
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="app.js"></script>
+</html>
