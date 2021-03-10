@@ -25,5 +25,52 @@ p {
   position: relative;
   width: 100px;
   margin-left: -60px;
-  /* height: 100px; */
+}
+
+.barajas {
+  position: relative;
+  box-sizing: border-box;
+}
+
+.tapa {
+  width: 100px;
+  margin-top: 10px;
+  min-height: 40%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  transition: transform 200ms;
+}
+
+.tapa:nth-last-child(n + 4) {
+  --y: calc(-50% + -20px);
+  transform: translate(-50%, var(--y)) scale(0.9);
+  box-shadow: 0 0 1px 1px #00000003;
+}
+.tapa:nth-last-child(3) {
+  --y: calc(-50% + -10px);
+  transform: translate(-50%, var(--y)) scale(0.95);
+}
+.tapa:nth-last-child(2) {
+  --y: calc(-50%);
+  transform: translate(-50%, var(--y)) scale(1);
+}
+.tapa:nth-last-child(1) {
+  --y: calc(-50% + 10px);
+  transform: translate(-50%, var(--y)) scale(1.05);
+}
+
+@keyframes swap {
+  100% {
+    transform: translate(-700px, -35%);
+    /* animation-timing-function: ease-in; */
+  }
+  /* */
+
+  /* 100% {
+    transform: translate(-50%, calc(var(--y) - 15px)) scale(0.85);
+    z-index: -1;
+  } */
 }
