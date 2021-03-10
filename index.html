@@ -16,30 +16,40 @@
     </header>
     <main>
         <div class="text-center mt-2">
-            <button class="btn btn-success">Iniciar Juego</button>
-            <button class="btn btn-primary ml-2">Pedir Carta</button>
+            <button  class="btn btn-success inicio" onclick="crearBaraja()">Iniciar Juego</button>
+            <button class="btn btn-primary ml-2" onclick="mostrarCartas()">Pedir Carta</button>
             <button class="btn btn-warning ml-2">Detener</button>
             <button class="btn btn-danger ml-2">Salir</button>
         </div>
 
         <div class="row container">
-            <div class="col">
-                <p id="nombreJugador">Jugador-0 <button class="btn bnt-sm btn-info" onclick="prueba()">Cambiar nombre</button></p> 
-                <img class="carta" src="cartas/10C.png" alt="">
-                <img class="carta" src="cartas/KD.png" alt="">
+            <div class="col jugadores" id="jugador">
+                <p id="nombreJugador">Jugador-0 <button class="btn bnt-sm btn-info" onclick="cambiarNombre()">Cambiar nombre</button></p> 
+                <!-- <img class="carta" src="cartas/10C.png" alt="">
+                <img class="carta" src="cartas/KD.png" alt=""> -->
             </div>
-        </div>
+
+            <div class="col barajas" id="barajas">
+                <!-- <img class="tapa"src="cartas/red_back.png" alt="">
+                <img class="tapa" src="cartas/red_back.png" alt="">
+                <img class="tapa" src="cartas/red_back.png" alt="">
+                <img class="tapa" src="cartas/red_back.png" alt="">
+                <img class="tapa" src="cartas/red_back.png" alt=""> -->
+            </div>
+
         <div class="row container">
-            <div class="col">
+            <div class="col jugadores" id="pc">
                 <p>PC-0</p>
-                <img class="carta" src="cartas/10C.png" alt="">
-                <img class="carta" src="cartas/KD.png" alt="">
+                <!-- <img class="carta" src="cartas/10C.png" alt="">
+                <img class="carta" src="cartas/KD.png" alt=""> -->
             </div>
         </div>
+        
     </main>
 </body>
 
 <script src="//cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<script src="app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/underscore@1.12.0/underscore-min.js"></script>
+<script src="app.js?v=1"></script>
 </html>
