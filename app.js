@@ -1,5 +1,20 @@
-const jugador= document.getElementById("nombreJugador"); 
+const jugador= document.querySelector("#nombreJugador"); 
+let baraja=[];
+let palos=['S','C','D','H'];
+let figuras=['J','Q','K','A'];
+let participantes=[];
+let puntosJugador=0;
+let puntosPC=0;
 
+const btnNuevo=document.querySelector('#btnNuevo'),
+    btnPedirCarta=document.querySelector('#btnPedirCarta'),
+    btnDetener=document.querySelector('#btnDetener');
+    btnSalir=document.querySelector('#btnSalir');
+    btnCambiarNombre=document.querySelector('#btnCambiarNombre');
+
+const resultado= document.querySelectorAll('span');
+const cartasJugador=document.querySelector('#cartasJugador');
+const cartasPC=document.querySelector('#cartasPC');
 
 
 function cambiarNombre() {
@@ -51,9 +66,6 @@ function swap(e) {
 
 
 //Funcionalidad del juego
-  let baraja=[];
-  let palos=['S','C','D','H'];
-  let figuras=['J','Q','K','A'];
 
 const crearBaraja=()=>{
   baraja=[];
@@ -74,7 +86,7 @@ const crearBaraja=()=>{
       }
   }
   baraja=_.shuffle(baraja);
-  mensajeInicioJuego();
+
 }
 
 const pedirCarta=()=>{
@@ -86,29 +98,90 @@ const valorCarta=(carta)=>{
   return isNaN(valor) ? (valor==='A' ? 11: 10):parseInt(valor);
 }
 
-const mostrarCartas=()=>{
-  
-  let jugadores=document.querySelectorAll('.jugadores');
-  
-  for (let jugador of jugadores) {
-    console.log(jugador.getAttribute('id'));
-    
-    for (let i = 0; i <=1; i++) {
-      let carta=pedirCarta()+'.png';
-      console.log(carta);
-      let imgCarta=document.createElement("img");
-      i==0 ?imgCarta.src = "/cartas/"+carta : imgCarta.src = "cartas/red_back.png" ;
-      imgCarta.classList.add("carta");
-      jugador.append(imgCarta);
-    }
+
+
+btnNuevo.addEventListener('click', ()=>{
+  if (baraja.length==0) {
+    crearBaraja();
   }
-}
+  btnNuevo.disabled=true;
+  btnPedirCarta.disabled=false;
+  btnDetener.disabled=false;
+  puntosJugador=0;
+  puntosPC=0;
+  resultado[0].innerText=0;
+  resultado[1].innerText=1;
+  cartasJugador.innerHTML='';
+  cartasPC.innerHTML=''
+ });
  
-const sumarPuntaje=(valor)=>{
-  let total=0;
-  total=total+valor;
-  return total;
+
+const turnoPC=(puntosJugador)=>{
+  do{
+    const carta = pedirCarta();
+    puntosPC=puntosPC + valorCarta(carta);
+    resultado[1].innerText=puntosPC;
+    const imgCarta = document.createElement('img');
+    imgCarta.src = `cartas/${carta}.png` ;
+    imgCarta.classList.add("carta");
+    cartasPC.append(imgCarta);
+
+    if (puntosJugador>21) {
+      break;
+    }
+  }while (puntosPC<puntosJugador && puntosJugador<=21);
+    
+    setTimeout(()=>{
+
+      if (puntosJugador=== puntosPC) {
+        Swal.fire("EMPATE");
+      }else if(puntosJugador>21){
+        Swal.fire("PERDISTE. GANO LA COMPUTADORA");
+      }else if(puntosPC>21){
+        Swal.fire("GANASTE");
+      }else{
+        Swal.fire("La computadora gano");
+      }
+    }, 1000);
+    btnNuevo.disabled=false;  
 }
+
+
+
+btnPedirCarta.addEventListener('click', ()=>{
+  const carta = pedirCarta();
+  puntosJugador=puntosJugador + valorCarta(carta);
+  resultado[0].innerText=puntosJugador;
+  const imgCarta = document.createElement('img');
+
+  imgCarta.src = `cartas/${carta}.png` ;
+  imgCarta.classList.add("carta");
+  cartasJugador.append(imgCarta);
+
+  if(puntosJugador>21){
+    alert('Perdiste');
+    turnoPC(puntosJugador);
+    btnPedirCarta.disabled=true;
+    btnDetener.disabled=true;
+  }else if(puntosJugador===21){
+    btnPedirCarta.disabled=true;
+    btnDetener.disabled=true;
+    turnoPC(puntosJugador);
+  }
+
+
+ });
+
+btnDetener.addEventListener('click', ()=>{
+   btnPedirCarta.disabled=true;
+   btnDetener.disabled=true;
+   turnoPC(puntosJugador);
+ });
+  btnSalir.addEventListener('click', ()=>{
+   alert('Dio click en el boton Salir');
+ });
+
+
 
 const mensajeInicioJuego=()=>{
  let timerInterval
@@ -134,13 +207,9 @@ const mensajeInicioJuego=()=>{
       clearInterval(timerInterval)
     }
   }).then((result) => {
-    /* Read more about handling dismissals below */
+
     if (result.dismiss === Swal.DismissReason.timer) {
-      console.log('I was closed by the timer');
-      let botonInicio=document.querySelector('.inicio');
-      mostrarCartas();
-      botonInicio.disabled=true;
+      crearBaraja();
     }
   })
 }
-//  console.log(pedirCarta());
