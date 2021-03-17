@@ -1,4 +1,4 @@
-const jugador= document.querySelector("#nombreJugador"); 
+
 let baraja=[];
 let palos=['S','C','D','H'];
 let figuras=['J','Q','K','A'];
@@ -12,57 +12,91 @@ const btnNuevo=document.querySelector('#btnNuevo'),
     btnSalir=document.querySelector('#btnSalir');
     btnCambiarNombre=document.querySelector('#btnCambiarNombre');
 
-const resultado= document.querySelectorAll('span');
+const puntajeJugador=document.querySelector('#puntajeJugador');
+const puntajePC=document.querySelector('#puntajePC');
 const cartasJugador=document.querySelector('#cartasJugador');
 const cartasPC=document.querySelector('#cartasPC');
+const nombreJugador= document.querySelector("#nombreJugador"); 
+const mazoCartas = document.querySelector(".barajas");
 
 
-function cambiarNombre() {
 
-  Swal.fire({
-    title: 'Datos Personales',
-    inputLabel: 'Ingrese su nombre',
-    input: 'text',
-    showCancelButton: true,
-    confirmButtonText: 'Aceptar',
-    preConfirm: (login) => {
-      return fetch(`//api.github.com/users/${login}`)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(response.statusText)
-          }
-          return response.json()
-        })
-        .catch(error => {
-          Swal.showValidationMessage(
-            `Request failed: ${error}`
-          )
-        })
-    },
-    allowOutsideClick: () => !Swal.isLoading()
-    }).then((result) => {
-      if (result.isConfirmed) {
-        jugador.innerHTML=`${result.value.login}-0`
-      }
-    })
-}
+  btnNuevo.addEventListener('click', ()=>{
+    if (baraja.length==0) {
+      crearBaraja();
+      mensajeInicioJuego();
+    }
+    btnNuevo.disabled=true;
+    btnPedirCarta.disabled=false;
+    btnDetener.disabled=false;
+    puntosJugador=0;
+    puntosPC=0;
+    puntajeJugador.innerText=0;
+    puntajePC.innerText=0;
+    cartasJugador.innerHTML='';
+    cartasPC.innerHTML=''
+ });
+ 
+  btnPedirCarta.addEventListener('click', ()=>{
+    const carta = pedirCarta();
+    puntosJugador=puntosJugador + valorCarta(carta);
+    puntajeJugador.innerText=puntosJugador;
+    const imgCarta = document.createElement('img');
 
-let mazoCartas = document.querySelector(".barajas");
+    imgCarta.src = `cartas/${carta}.png` ;
+    imgCarta.classList.add("carta");
+    cartasJugador.append(imgCarta);
 
-[...mazoCartas.children].reverse().forEach(i => mazoCartas.append(i));
+    if(puntosJugador>21){
+      Swal.fire('Perdiste');
+      turnoPC(puntosJugador);
+      btnPedirCarta.disabled=true;
+      btnDetener.disabled=true;
+    }else if(puntosJugador===21){
+      btnPedirCarta.disabled=true;
+      btnDetener.disabled=true;
+      turnoPC(puntosJugador);
+    }
+  });
 
-mazoCartas.addEventListener("click", swap);
+  btnDetener.addEventListener('click', ()=>{
+    btnPedirCarta.disabled=true;
+    btnDetener.disabled=true;
+    turnoPC(puntosJugador);
+  });
+  btnSalir.addEventListener('click', ()=>{
+   //alert('Dio click en el boton Salir');
+    btnNuevo.disabled=false;
+    btnCambiarNombre.style.display='inline';
+    puntosJugador=0;
+    puntosPC=0;
+    puntajeJugador.innerText=0;
+    puntajePC.innerText=0;
+    cartasJugador.innerHTML='';
+    cartasPC.innerHTML=''
+ });
 
-function swap(e) {
-  let tapa = document.querySelector(".tapa:last-child");
-  if (e.target !== tapa) return;
-  tapa.style.animation = "swap 700ms forwards";
+  btnCambiarNombre.addEventListener('click', ()=>{
+    cambiarNombre();
+  })
+  // mazoCartas.addEventListener("click", swap);
 
-  setTimeout(() => {
-    tapa.style.animation = "";
-    mazoCartas.prepend(tapa);
-  }, 700);
-}
+
+//FUNCION PARA SIMULAR EL MOVIMIENTO DEL MAZO
+// [...mazoCartas.children].reverse().forEach(i => mazoCartas.append(i));
+
+
+
+// function swap(e) {
+//   let tapa = document.querySelector(".tapa:last-child");
+//   if (e.target !== tapa) return;
+//   tapa.style.animation = "swap 700ms forwards";
+
+//   setTimeout(() => {
+//     tapa.style.animation = "";
+//     mazoCartas.prepend(tapa);
+//   }, 700);
+// }
 
 
 //Funcionalidad del juego
@@ -98,29 +132,11 @@ const valorCarta=(carta)=>{
   return isNaN(valor) ? (valor==='A' ? 11: 10):parseInt(valor);
 }
 
-
-
-btnNuevo.addEventListener('click', ()=>{
-  if (baraja.length==0) {
-    crearBaraja();
-  }
-  btnNuevo.disabled=true;
-  btnPedirCarta.disabled=false;
-  btnDetener.disabled=false;
-  puntosJugador=0;
-  puntosPC=0;
-  resultado[0].innerText=0;
-  resultado[1].innerText=1;
-  cartasJugador.innerHTML='';
-  cartasPC.innerHTML=''
- });
- 
-
 const turnoPC=(puntosJugador)=>{
   do{
     const carta = pedirCarta();
     puntosPC=puntosPC + valorCarta(carta);
-    resultado[1].innerText=puntosPC;
+    puntajePC.innerText=puntosPC;
     const imgCarta = document.createElement('img');
     imgCarta.src = `cartas/${carta}.png` ;
     imgCarta.classList.add("carta");
@@ -145,44 +161,6 @@ const turnoPC=(puntosJugador)=>{
     }, 1000);
     btnNuevo.disabled=false;  
 }
-
-
-
-btnPedirCarta.addEventListener('click', ()=>{
-  const carta = pedirCarta();
-  puntosJugador=puntosJugador + valorCarta(carta);
-  resultado[0].innerText=puntosJugador;
-  const imgCarta = document.createElement('img');
-
-  imgCarta.src = `cartas/${carta}.png` ;
-  imgCarta.classList.add("carta");
-  cartasJugador.append(imgCarta);
-
-  if(puntosJugador>21){
-    alert('Perdiste');
-    turnoPC(puntosJugador);
-    btnPedirCarta.disabled=true;
-    btnDetener.disabled=true;
-  }else if(puntosJugador===21){
-    btnPedirCarta.disabled=true;
-    btnDetener.disabled=true;
-    turnoPC(puntosJugador);
-  }
-
-
- });
-
-btnDetener.addEventListener('click', ()=>{
-   btnPedirCarta.disabled=true;
-   btnDetener.disabled=true;
-   turnoPC(puntosJugador);
- });
-  btnSalir.addEventListener('click', ()=>{
-   alert('Dio click en el boton Salir');
- });
-
-
-
 const mensajeInicioJuego=()=>{
  let timerInterval
   Swal.fire({
@@ -209,7 +187,37 @@ const mensajeInicioJuego=()=>{
   }).then((result) => {
 
     if (result.dismiss === Swal.DismissReason.timer) {
-      crearBaraja();
     }
   })
+}
+
+const cambiarNombre=()=> {
+
+  Swal.fire({
+    title: 'Nombre del jugador',
+    inputLabel: 'Ingrese su nombre',
+    input: 'text',
+    showCancelButton: true,
+    confirmButtonText: 'Aceptar',
+    preConfirm: (login) => {
+      return fetch(`//api.github.com/users/${login}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(response.statusText)
+          }
+          return response.json()
+        })
+        .catch(error => {
+          Swal.showValidationMessage(
+            `Request failed: ${error}`
+          )
+        })
+    },
+    allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+      if (result.isConfirmed) {
+        nombreJugador.innerHTML=`${result.value.login}`;
+        btnCambiarNombre.style.display='none';
+      }
+    })
 }
