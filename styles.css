@@ -3,6 +3,7 @@ body {
   background-image: url("https://www.telegraph.co.uk/content/dam/betting/Better-Collective/casino-blackjack-table-xlarge.jpg");
   background-repeat: no-repeat;
   background-size: cover;
+  background-attachment:fixed;
 }
 header {
   text-align: center;
