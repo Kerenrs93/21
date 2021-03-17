@@ -19,12 +19,12 @@
             <button id="btnNuevo" class="btn btn-success inicio">Iniciar Juego</button>
             <button id="btnPedirCarta" class="btn btn-primary ml-2" disabled>Pedir Carta</button>
             <button id="btnDetener" class="btn btn-warning ml-2" disabled>Detener</button>
-            <button id="btnSalir"class="btn btn-danger ml-2" disabled>Salir</button>
+            <button id="btnSalir"class="btn btn-danger ml-2" >Salir</button>
         </div>
 
         <div class="row container">
             <div class="col">
-                <p id="nombreJugador">Jugador-<span>0</span>  
+                <p> <span id="nombreJugador">Jugador</span>-<span id="puntajeJugador">0</span>  
                     <button id="btnCambiarNombre" class="btn bnt-sm btn-info" >Cambiar nombre</button>
                 </p> 
                 <div id="cartasJugador"></div>
@@ -40,7 +40,7 @@
 
         <div class="row container">
             <div class="col jugadores" id="pc">
-                <p>PC-<span>0</span> </p>
+                <p>PC-<span id="puntajePC">0</span> </p>
                 <div id="cartasPC"></div>
             </div>
         </div>
