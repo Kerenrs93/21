@@ -1,27 +1,26 @@
 
-let baraja=[];
-let palos=['S','C','D','H'];
-let figuras=['J','Q','K','A'];
-let participantes=[];
-let puntosJugador=0;
-let puntosPC=0;
+let baraja=[],
+    palos=['S','C','D','H'],
+    figuras=['J','Q','K','A'],
+    participantes=[],
+    puntosJugador=0,
+    puntosPC=0;
+
 
 const btnNuevo=document.querySelector('#btnNuevo'),
-    btnPedirCarta=document.querySelector('#btnPedirCarta'),
-    btnDetener=document.querySelector('#btnDetener');
-    btnSalir=document.querySelector('#btnSalir');
-    btnCambiarNombre=document.querySelector('#btnCambiarNombre');
+      btnPedirCarta=document.querySelector('#btnPedirCarta'),
+      btnDetener=document.querySelector('#btnDetener');
+      btnSalir=document.querySelector('#btnSalir');
+      btnCambiarNombre=document.querySelector('#btnCambiarNombre');
+      puntajeJugador=document.querySelector('#puntajeJugador');
+      puntajePC=document.querySelector('#puntajePC');
+      cartasJugador=document.querySelector('#cartasJugador'),
+      cartasPC=document.querySelector('#cartasPC');
+      nombreJugador= document.querySelector("#nombreJugador"); 
+      divDeck = document.querySelector(".deck");
+      imgDeck = document.querySelector(".tapa");
 
-const puntajeJugador=document.querySelector('#puntajeJugador');
-const puntajePC=document.querySelector('#puntajePC');
-const cartasJugador=document.querySelector('#cartasJugador');
-const cartasPC=document.querySelector('#cartasPC');
-const nombreJugador= document.querySelector("#nombreJugador"); 
-const mazoCartas = document.querySelector(".barajas");
-
-
-
-  btnNuevo.addEventListener('click', ()=>{
+btnNuevo.addEventListener('click', ()=>{
     if (baraja.length==0) {
       crearBaraja();
       mensajeInicioJuego();
@@ -35,36 +34,41 @@ const mazoCartas = document.querySelector(".barajas");
     puntajePC.innerText=0;
     cartasJugador.innerHTML='';
     cartasPC.innerHTML=''
- });
+});
  
-  btnPedirCarta.addEventListener('click', ()=>{
-    const carta = pedirCarta();
-    puntosJugador=puntosJugador + valorCarta(carta);
-    puntajeJugador.innerText=puntosJugador;
-    const imgCarta = document.createElement('img');
+btnPedirCarta.addEventListener('click', ()=>{
+    moverCartaJugador();
+    setTimeout(() => {
+        const carta = pedirCarta();
+        puntosJugador=puntosJugador + valorCarta(carta);
+        puntajeJugador.innerText=puntosJugador;
+        const imgCarta = document.createElement('img');
 
-    imgCarta.src = `cartas/${carta}.png` ;
-    imgCarta.classList.add("carta");
-    cartasJugador.append(imgCarta);
+        imgCarta.src = `cartas/${carta}.png` ;
+        imgCarta.classList.add("carta");
+        cartasJugador.append(imgCarta);
 
-    if(puntosJugador>21){
-      Swal.fire('Perdiste');
-      turnoPC(puntosJugador);
-      btnPedirCarta.disabled=true;
-      btnDetener.disabled=true;
-    }else if(puntosJugador===21){
-      btnPedirCarta.disabled=true;
-      btnDetener.disabled=true;
-      turnoPC(puntosJugador);
-    }
-  });
+        if(puntosJugador>21){
+          Swal.fire('Perdiste');
+          turnoPC(puntosJugador);
+          btnPedirCarta.disabled=true;
+          btnDetener.disabled=true;
+        }else if(puntosJugador===21){
+          btnPedirCarta.disabled=true;
+          btnDetener.disabled=true;
+          turnoPC(puntosJugador);
+        }
+    }, 500);
 
-  btnDetener.addEventListener('click', ()=>{
+});
+
+btnDetener.addEventListener('click', ()=>{
     btnPedirCarta.disabled=true;
     btnDetener.disabled=true;
     turnoPC(puntosJugador);
-  });
-  btnSalir.addEventListener('click', ()=>{
+});
+
+btnSalir.addEventListener('click', ()=>{
    //alert('Dio click en el boton Salir');
     btnNuevo.disabled=false;
     btnCambiarNombre.style.display='inline';
@@ -74,62 +78,54 @@ const mazoCartas = document.querySelector(".barajas");
     puntajePC.innerText=0;
     cartasJugador.innerHTML='';
     cartasPC.innerHTML=''
- });
+});
 
-  btnCambiarNombre.addEventListener('click', ()=>{
-    cambiarNombre();
-  })
-  // mazoCartas.addEventListener("click", swap);
+btnCambiarNombre.addEventListener('click', ()=>{cambiarNombre();});
+
+divDeck.addEventListener("click",()=>{
+  moverCartaJugador();
+});
 
 
 //FUNCION PARA SIMULAR EL MOVIMIENTO DEL MAZO
-// [...mazoCartas.children].reverse().forEach(i => mazoCartas.append(i));
 
-
-
-// function swap(e) {
-//   let tapa = document.querySelector(".tapa:last-child");
-//   if (e.target !== tapa) return;
-//   tapa.style.animation = "swap 700ms forwards";
-
-//   setTimeout(() => {
-//     tapa.style.animation = "";
-//     mazoCartas.prepend(tapa);
-//   }, 700);
-// }
-
+const moverCartaJugador=()=>{
+  imgDeck.classList.add('moviendo');
+  setTimeout(() => {
+    imgDeck.classList.remove('moviendo');
+  }, 1000);
+}
 
 //Funcionalidad del juego
 
 const crearBaraja=()=>{
-  baraja=[];
-  for(let i=2;i<=10; i++)
-  {
-    
-    for(let palosDeCartas of palos)
+    for(let i=2;i<=10; i++)
     {
-      baraja.push(i+palosDeCartas);
-    }
-  }
-
-  for(let figurasDeCartas of figuras)
-  {
       for(let palosDeCartas of palos)
       {
-        baraja.push(figurasDeCartas+palosDeCartas);
+        baraja.push(i+palosDeCartas);
       }
-  }
-  baraja=_.shuffle(baraja);
+    }
+
+    for(let figurasDeCartas of figuras)
+    {
+        for(let palosDeCartas of palos)
+        {
+          baraja.push(figurasDeCartas+palosDeCartas);
+        }
+    }
+    
+    barajarCartas();
 
 }
 
-const pedirCarta=()=>{
-  return  baraja.length==0 ? alert('No hay mas cartas'): baraja.pop();
-}
+const barajarCartas=()=>baraja=_.shuffle(baraja);
+
+const pedirCarta=()=>{return  baraja.length==0 ? alert('No hay mas cartas'): baraja.pop();}
 
 const valorCarta=(carta)=>{
-  const valor=carta.substring(0,carta.length-1);
-  return isNaN(valor) ? (valor==='A' ? 11: 10):parseInt(valor);
+    const valor=carta.substring(0,carta.length-1);
+    return isNaN(valor) ? (valor==='A' ? 11: 10):parseInt(valor);
 }
 
 const turnoPC=(puntosJugador)=>{
@@ -148,16 +144,10 @@ const turnoPC=(puntosJugador)=>{
   }while (puntosPC<puntosJugador && puntosJugador<=21);
     
     setTimeout(()=>{
-
-      if (puntosJugador=== puntosPC) {
-        Swal.fire("EMPATE");
-      }else if(puntosJugador>21){
-        Swal.fire("PERDISTE. GANO LA COMPUTADORA");
-      }else if(puntosPC>21){
-        Swal.fire("GANASTE");
-      }else{
-        Swal.fire("La computadora gano");
-      }
+      puntajeJugador===puntosPC ? Swal.fire("EMPATE") : 
+      puntosJugador>21 ? Swal.fire("PERDISTE. GANO LA COMPUTADORA") : 
+      puntosPC>21 ? Swal.fire("GANASTE"):
+      Swal.fire("La computadora gano");
     }, 1000);
     btnNuevo.disabled=false;  
 }
