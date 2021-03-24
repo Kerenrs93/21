@@ -77,3 +77,10 @@ p {
     transform: translate(-600px, 190px);
   }
 } */
+@media only screen and (max-width: 600px) {
+  @keyframes moviendo {
+    100% {
+      transform: translate(-100px, -10px);
+    }
+  }
+}
