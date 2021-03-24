@@ -40,16 +40,9 @@ btnPedirCarta.addEventListener('click', ()=>{
     moverCartaJugador();
     setTimeout(() => {
         const carta = pedirCarta();
-        puntosJugador=puntosJugador + valorCarta(carta);
-        puntajeJugador.innerText=puntosJugador;
-        const imgCarta = document.createElement('img');
-
-        imgCarta.src = `cartas/${carta}.png` ;
-        imgCarta.classList.add("carta");
-        cartasJugador.append(imgCarta);
-
+        puntosJugador=sumarPuntaje(puntosJugador, carta, puntajeJugador);
+        crearImagenCarta(carta,cartasJugador);
         if(puntosJugador>21){
-          Swal.fire('Perdiste');
           turnoPC(puntosJugador);
           btnPedirCarta.disabled=true;
           btnDetener.disabled=true;
@@ -69,7 +62,6 @@ btnDetener.addEventListener('click', ()=>{
 });
 
 btnSalir.addEventListener('click', ()=>{
-   //alert('Dio click en el boton Salir');
     btnNuevo.disabled=false;
     btnCambiarNombre.style.display='inline';
     puntosJugador=0;
@@ -82,9 +74,9 @@ btnSalir.addEventListener('click', ()=>{
 
 btnCambiarNombre.addEventListener('click', ()=>{cambiarNombre();});
 
-divDeck.addEventListener("click",()=>{
-  moverCartaJugador();
-});
+// divDeck.addEventListener("click",()=>{
+//   moverCartaJugador();
+// });
 
 
 //FUNCION PARA SIMULAR EL MOVIMIENTO DEL MAZO
@@ -128,16 +120,24 @@ const valorCarta=(carta)=>{
     return isNaN(valor) ? (valor==='A' ? 11: 10):parseInt(valor);
 }
 
-const turnoPC=(puntosJugador)=>{
-  do{
-    const carta = pedirCarta();
-    puntosPC=puntosPC + valorCarta(carta);
-    puntajePC.innerText=puntosPC;
+const crearImagenCarta=(carta,jugador)=>{
     const imgCarta = document.createElement('img');
     imgCarta.src = `cartas/${carta}.png` ;
     imgCarta.classList.add("carta");
-    cartasPC.append(imgCarta);
+    jugador.append(imgCarta);
+}
 
+const sumarPuntaje=(puntos, carta, puntaje)=>{
+    puntos=puntos + valorCarta(carta);
+    puntaje.innerText=puntos;
+    return puntos;
+}
+
+const turnoPC=(puntosJugador)=>{
+  do{
+    const carta = pedirCarta();
+    puntosPC=sumarPuntaje(puntosPC, carta, puntajePC);
+    crearImagenCarta(carta,cartasPC);
     if (puntosJugador>21) {
       break;
     }
