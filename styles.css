@@ -58,13 +58,13 @@ p {
   z-index: 1;
 }
 
-/* .tapa.moviendoPC {
-  animation-duration: 0.5s;
-  animation-name: moviendo;
+.moviendoPC {
+  animation-duration: 0.1s;
+  animation-name: moviendoPC;
   animation-iteration-count: 1;
   animation-direction: 1;
   animation-timing-function: linear;
-} */
+}
 
 @keyframes moviendo {
   100% {
@@ -72,15 +72,46 @@ p {
   }
 }
 
-/* @keyframes moviendoPC {
+@keyframes moviendoPC {
   100% {
     transform: translate(-600px, 190px);
   }
-} */
-@media only screen and (max-width: 600px) {
+}
+@media only screen and (max-width: 780px) {
   @keyframes moviendo {
     100% {
       transform: translate(-100px, -10px);
+    }
+  }
+  @keyframes moviendoPC {
+    100% {
+      transform: translate(-200px, 120px);
+    }
+  }
+}
+
+@media only screen and (max-width: 980px) {
+  @keyframes moviendo {
+    100% {
+      transform: translate(-300px, -70px);
+    }
+  }
+  @keyframes moviendoPC {
+    100% {
+      transform: translate(-250px, 150px);
+    }
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  @keyframes moviendo {
+    100% {
+      transform: translate(-500px, -80px);
+    }
+  }
+  @keyframes moviendoPC {
+    100% {
+      transform: translate(-450px, 170px);
     }
   }
 }

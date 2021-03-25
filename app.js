@@ -37,7 +37,8 @@ btnNuevo.addEventListener('click', ()=>{
 });
  
 btnPedirCarta.addEventListener('click', ()=>{
-    moverCartaJugador();
+
+    moverCartaJugador("moviendo");
     setTimeout(() => {
         const carta = pedirCarta();
         puntosJugador=sumarPuntaje(puntosJugador, carta, puntajeJugador);
@@ -81,10 +82,10 @@ btnCambiarNombre.addEventListener('click', ()=>{cambiarNombre();});
 
 //FUNCION PARA SIMULAR EL MOVIMIENTO DEL MAZO
 
-const moverCartaJugador=()=>{
-  imgDeck.classList.add('moviendo');
+const moverCartaJugador=(moviendo)=>{
+  imgDeck.classList.add(moviendo);
   setTimeout(() => {
-    imgDeck.classList.remove('moviendo');
+    imgDeck.classList.remove(moviendo);
   }, 1000);
 }
 
@@ -136,6 +137,7 @@ const sumarPuntaje=(puntos, carta, puntaje)=>{
 const turnoPC=(puntosJugador)=>{
   do{
     const carta = pedirCarta();
+    moverCartaJugador("moviendoPC");
     puntosPC=sumarPuntaje(puntosPC, carta, puntajePC);
     crearImagenCarta(carta,cartasPC);
     if (puntosJugador>21) {
