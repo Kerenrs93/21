@@ -38,7 +38,7 @@ btnNuevo.addEventListener('click', ()=>{
  
 btnPedirCarta.addEventListener('click', ()=>{
 
-    moverCartaJugador("moviendo");
+    mover("moviendo");
     setTimeout(() => {
         const carta = pedirCarta();
         puntosJugador=sumarPuntaje(puntosJugador, carta, puntajeJugador);
@@ -75,14 +75,10 @@ btnSalir.addEventListener('click', ()=>{
 
 btnCambiarNombre.addEventListener('click', ()=>{cambiarNombre();});
 
-// divDeck.addEventListener("click",()=>{
-//   moverCartaJugador();
-// });
-
 
 //FUNCION PARA SIMULAR EL MOVIMIENTO DEL MAZO
 
-const moverCartaJugador=(moviendo)=>{
+const mover=(moviendo)=>{
   imgDeck.classList.add(moviendo);
   setTimeout(() => {
     imgDeck.classList.remove(moviendo);
@@ -137,7 +133,7 @@ const sumarPuntaje=(puntos, carta, puntaje)=>{
 const turnoPC=(puntosJugador)=>{
   do{
     const carta = pedirCarta();
-    moverCartaJugador("moviendoPC");
+    mover("moviendoPC");
     puntosPC=sumarPuntaje(puntosPC, carta, puntajePC);
     crearImagenCarta(carta,cartasPC);
     if (puntosJugador>21) {
@@ -200,9 +196,8 @@ const cambiarNombre=()=> {
           return response.json()
         })
         .catch(error => {
-          Swal.showValidationMessage(
-            `Request failed: ${error}`
-          )
+          Swal.showValidationMessage(`Request failed: ${error}`)
+          console.log(error);
         })
     },
     allowOutsideClick: () => !Swal.isLoading()
